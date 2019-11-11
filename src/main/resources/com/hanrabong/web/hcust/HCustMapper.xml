@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.hanrabong.web.hcust.HCustMapper">
+   
+   	<select id="countHCusts" resultType="int">
+		SELECT COUNT(*) COUNT FROM HCUST 
+	</select>
+
+   	<select id="lastCNum" resultType="int">
+		SELECT MAX(CNUM)  CNUM FROM HCUST order by cnum desc
+	</select>
+
+   <select id="selectHCustByCNum"  resultType="hcust">
+      SELECT * FROM HCUST WHERE CNUM LIKE #{cnum} 
+   </select>
+   
+   <select id="existId"   resultType="int">
+      SELECT COUNT(*) FROM HCUST WHERE CID LIKE #{cid} 
+   </select>
+   
+     <select id="selectByCidCpw"  resultType="hcust">
+      SELECT * FROM HCUST WHERE CID LIKE #{cid} AND CPW LIKE #{cpw}
+   </select>
+   
+   <insert id="insertHCust" parameterType="hcust">
+   INSERT INTO HCUST ( CNUM,CID, CPW, CNAME, GEN, BIRTH, SKIN_PROB, SKIN_TYPE, CHILD, ADDR, TEL, CPOINT)
+  	VALUES (#{cnum},#{cid},#{cpw},#{cname},#{gen},#{birth},#{skinProb},#{skinType},#{child},#{addr},#{tel},#{cpoint})  
+</insert>
+   
+
+</mapper>

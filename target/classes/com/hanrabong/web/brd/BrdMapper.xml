@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanrabong.web.brd.BrdMapper">
+
+	<select id="lastArticle" resultType="int">
+		SELECT MAX(BRDSEQ) count
+		FROM BRD
+	</select>
+
+	<select id="countAllArticle" resultType="int">
+		SELECT COUNT(BRDSEQ) FROM BRD 
+	</select>
+
+	<select id="selectBrdArticles" resultType="brd" parameterType="pxy">
+		SELECT * FROM BRD 
+		        ORDER BY BRDSEQ DESC
+		LIMIT ${startRow}, ${pageSize}
+	</select>
+
+
+	<select id="selectArticle" resultType="brd">
+		SELECT * FROM BRD WHERE
+		BRDSEQ LIKE #{brdseq}
+	</select>
+
+	<insert id="insertArticle" parameterType="brd">
+		INSERT INTO BRD (WRITER, BPOINT, WRITEDATE, CNUM, CONTENT, COMSEQ)
+		VALUES (#{writer},#{writedate},#{bpoint},#{cnum},#{content},#{comseq})
+	</insert>
+
+	<update id="modify" parameterType="brd">
+		UPDATE BRD SET
+		CONTENT = #{content}
+		WHERE BRDSEQ LIKE #{brdseq}
+	</update>
+
+	<delete id="delete" parameterType="brd">
+		DELETE FROM BRD WHERE BRDSEQ LIKE #{brdseq}
+	</delete>
+
+
+</mapper>

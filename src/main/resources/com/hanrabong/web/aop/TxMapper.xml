@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanrabong.web.aop.TxMapper">
+
+	<insert id="insertDumpArticle" parameterType="string">
+		INSERT INTO BRD (WRITER, CNUM, CONTENT)
+		VALUES ('권혜령','13',#{content})
+	</insert>
+
+
+	<select id="countAllArticle" resultType="int">
+		SELECT COUNT(BRDSEQ) FROM BRD 
+	</select>
+</mapper>

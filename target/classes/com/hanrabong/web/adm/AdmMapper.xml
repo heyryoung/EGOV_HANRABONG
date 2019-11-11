@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.hanrabong.web.adm.AdmMapper">
+   
+   	<select id="countHCusts" resultType="adm">
+		SELECT COUNT(*) COUNT FROM HADMIN 
+	</select>
+
+   	<select id="lastCNum" resultType="adm">
+		SELECT MAX(CNUM)  CNUM FROM HADMIN order by cnum desc
+	</select>
+
+   <select id="selectHCustByCNum"  resultType="adm">
+      SELECT * FROM HADMIN WHERE CNUM LIKE #{cnum} 
+   </select>
+   
+   <select id="existId"   resultType="adm">
+      SELECT COUNT(*) FROM HADMIN WHERE CID LIKE #{cid} 
+   </select>
+   
+     <select id="selectByAnumPnum"  resultType="adm">
+      SELECT * FROM HADMIN WHERE CID LIKE #{anum} AND CPW LIKE #{pnum}
+   </select>
+   
+   <insert id="insertAdmin" parameterType="adm">
+   INSERT INTO HADMIN ( CNUM,CID, CPW, CNAME, GEN, BIRTH, SKIN_PROB, SKIN_TYPE, CHILD, ADDR, TEL, CPOINT)
+  	VALUES (#{cnum},#{cid},#{cpw},#{cname},#{gen},#{birth},#{skinProb},#{skinType},#{child},#{addr},#{tel},#{cpoint})  
+</insert>
+
+
+	<update id="modifyAdmin" parameterType="adm">
+		UPDATE HADMIN SET
+		CONTENT = #{content}
+		WHERE BRDSEQ LIKE #{brdseq}
+	</update>
+
+	<delete id="deleteAdmin" parameterType="adm">
+		DELETE FROM HADMIN WHERE BRDSEQ LIKE #{brdseq}
+	</delete>
+
+   
+
+</mapper>

@@ -33,7 +33,6 @@ public class Proxy {
 		return this.existNext;
 	} 
 	 
-	 
 	public void setExistNext(boolean existNext) {
 		this.existNext = existNext;
 	}

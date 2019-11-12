@@ -14,5 +14,4 @@ import lombok.NoArgsConstructor;
 @Lazy
 public class Admin {
 		private String anum, department, authority, aname, pnum, shipnum ;
-		//
 	}

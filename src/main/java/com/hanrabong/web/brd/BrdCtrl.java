@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-import com.hanrabong.web.pxy.Proxy;
+import com.hanrabong.web.pxy.PageProxy;
 import com.hanrabong.web.pxy.ProxyMap;
 
 @RestController
@@ -30,7 +30,7 @@ public class BrdCtrl {
 	@Autowired
 	BrdMapper brdMapper;
 	@Autowired
-	Proxy pxy;
+	PageProxy pxy;
 	@Autowired
 	ProxyMap map;
 
@@ -39,7 +39,6 @@ public class BrdCtrl {
 		pxy.setPageNum(pxy.parseInt(pageNo));
 		pxy.setPageSize(pxy.parseInt(pageSize));
 		pxy.paging();
-		System.out.println(pxy.getPageNum()+"pxy.getPageNum()pxy.getPageNum()pxy.getPageNum()pxy.getPageNum()pxy.getPageNum()");
 		list.clear();
 		Supplier<List<Brd>> n = () -> brdMapper.selectBrdArticles(pxy);
 		map.accept(Arrays.asList("articles", "pageInfo"), Arrays.asList(n.get(), pxy));

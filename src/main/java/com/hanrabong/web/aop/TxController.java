@@ -28,14 +28,9 @@ public class TxController {
 		return txService.crawling(map);		
 	}
 	
-	
-	
 	@GetMapping("/olivecrawling")
 	public List<?> register() throws Exception{
 		
 		return txService.oliveCategodycrawling();
 	}
-	
-	
-
 }

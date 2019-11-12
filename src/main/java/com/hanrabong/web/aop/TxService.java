@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hanrabong.web.pxy.Proxy;
+import com.hanrabong.web.pxy.PageProxy;
 import com.hanrabong.web.pxy.ProxyForCrawling;
 
 @Transactional
@@ -28,7 +28,6 @@ public class TxService {
 		return txServicelist;
 	}
 
-	
 	public List<?> oliveCategodycrawling() throws Exception {
 		List<String> txServicelist = new ArrayList<>();
 		txServicelist.clear();
@@ -37,7 +36,6 @@ public class TxService {
 		Consumer<String> s = t-> txMapper.insertDumpArticle(t);
 		for (String string : txServicelist) {
 			s.accept(string);
-			System.out.println(cnt+"-----------------");
 			cnt++;
 		}
 		return txServicelist;

@@ -142,8 +142,7 @@ auth = (()=>{
 							$('#nav_under').remove()
 							adm.onCreate()
 						})
-					        		
-		        		
+					  //사원 번호 없이 로그인 위해 블럭처리함.		
 		        		/*let anum = prompt('사원번호를 입력하시오') 
 		        		$.ajax({
 		        			url:_+'/admins/'+anum,
@@ -161,11 +160,9 @@ auth = (()=>{
 		        				}
 		        			},
 		        			error:e=>{}
-		        		})*/
+		        		})*/ 
 		        	}
 		    	})
-		    	
-		    	
 		    }	
 	
 	
@@ -207,8 +204,8 @@ auth = (()=>{
 	
 	let automate = ()=>{
 			// $('#btn_login').trigger("click")
-			$('#cid').val('leja') ,
-			$('#cpw').val('1214')
+			$('#cid').val('2') ,
+			$('#cpw').val('2')
 	}
 
 	

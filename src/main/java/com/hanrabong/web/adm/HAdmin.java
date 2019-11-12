@@ -10,5 +10,4 @@ public class HAdmin implements Serializable{
 	
 	private String anum, aid, apw, aname, authority, part;
 	
-	
 }

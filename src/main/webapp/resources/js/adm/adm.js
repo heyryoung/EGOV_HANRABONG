@@ -120,7 +120,6 @@ adm = (()=>{
 		'</div>')
 		.appendTo('#right')
 		
-		
 		$('<button class="btn btn-secondary my-2 my-sm-0" type="submit">InsertDumpData</button>')
 		.appendTo('#InsertDumpData')
 		.click(e=>{
@@ -143,8 +142,6 @@ adm = (()=>{
 		.css({width:'100%',height : '50%','overflow-x':'scroll', 'overflow-y':'scroll'})
 		.append('<h4>RESULT</h4>')
 		.appendTo('#right')
-
-
 	}
 	
 	 let customVue =()=>{

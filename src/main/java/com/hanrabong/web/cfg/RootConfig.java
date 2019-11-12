@@ -30,11 +30,11 @@ public class RootConfig {
 		HikariDataSource dataSource = new HikariDataSource(hikariConfig);
 	*/	
 	  DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		    dataSource.setUrl("jdbc:mysql://localhost:3306/hanrabong?serverTimezone=UTC");
+		    dataSource.setDriverClassName("org.mariadb.jdbc.Driver");
+		    dataSource.setUrl("jdbc:mariadb://172.168.0.89/hanrabong?serverTimezone=UTC");
 		    dataSource.setUsername("hanrabong");
 		    dataSource.setPassword("hanrabong");
-
+  
 		return dataSource;
 	}	
 	

@@ -12,52 +12,49 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-import com.hanrabong.web.pxy.Proxy;
-import com.hanrabong.web.pxy.ProxyMap;
+import com.hanrabong.web.pxy.PageProxy;
+import com.hanrabong.web.pxy.Trunk;
+import com.hanrabong.web.pxy.Box;
+import com.hanrabong.web.pxy.FileProxy;
 
 @RestController
 @RequestMapping("/articles")
 public class BrdCtrl {
-	@Autowired
-	List<Brd> list;
-	@Autowired
-	Brd brd;
-	@Autowired
-	BrdMapper brdMapper;
-	@Autowired
-	Proxy pxy;
-	@Autowired
-	ProxyMap map;
+	@Autowired Box<Brd> list;
+	@Autowired Brd brd;
+	@Autowired BrdMapper brdMapper;
+	@Autowired PageProxy pager;
+	@Autowired Trunk<Object> trunk;
+	@Autowired FileProxy filemgr;
 
 	@GetMapping("/page/{pageNo}/size/{pageSize}") // GET / post 글 목록(posts)을 봅니다(GET)
 	public Map<?, ?> articleList(@PathVariable String pageNo, @PathVariable String pageSize) {
-		pxy.setPageNum(pxy.parseInt(pageNo));
-		pxy.setPageSize(pxy.parseInt(pageSize));
-		pxy.paging();
-		System.out.println(pxy.getPageNum()+"pxy.getPageNum()pxy.getPageNum()pxy.getPageNum()pxy.getPageNum()pxy.getPageNum()");
-		list.clear();
-		Supplier<List<Brd>> n = () -> brdMapper.selectBrdArticles(pxy);
-		map.accept(Arrays.asList("articles", "pageInfo"), Arrays.asList(n.get(), pxy));
-		return map.get();
+		pager.setPageNum(pager.parseInt(pageNo));
+		pager.setPageSize(pager.parseInt(pageSize));
+		pager.paging();
+		System.out.println(pager.getPageNum()+"pxy.getPageNum()pxy.getPageNum()pxy.getPageNum()pxy.getPageNum()pxy.getPageNum()");
+		Supplier<List<Brd>> n = () -> brdMapper.selectBrdArticles(pager);
+		trunk.put(Arrays.asList("articles", "pageInfo"), Arrays.asList(n.get(), pager));
+		return trunk.get();
 	}
 
 	@GetMapping("/search/{searchWrd}") // GET / post 글 목록(posts)을 봅니다(GET)
 	public Map<?, ?> searchWrd(@PathVariable String searchWrd) {
-		pxy.paging();
-		list.clear();
-		Supplier<List<Brd>> n = () -> brdMapper.selectBrdArticles(pxy);
+		pager.paging();
+		Supplier<List<Brd>> n = () -> brdMapper.selectBrdArticles(pager);
 		List<Integer> temp = new ArrayList<>();
-		for (int i = 0; i < (pxy.getEndPage() - pxy.getStartPage() + 1); i++) {
-			temp.add(pxy.getStartPage() + i);
+		for (int i = 0; i < (pager.getEndPage() -pager.getStartPage() + 1); i++) {
+			temp.add(pager.getStartPage() + i);
 		}
 
-		map.accept(Arrays.asList("articles", "pageInfo"), Arrays.asList(n.get(), pxy));
-		return map.get();
+		trunk.put(Arrays.asList("articles", "pageInfo"), Arrays.asList(n.get(), pager));
+		return trunk.get();
 	}
 
 	@GetMapping("/{brdseq}") // GET / post 글 (posts)을 봅니다(GET)
@@ -71,9 +68,9 @@ public class BrdCtrl {
 	public Map<?, ?> writeArticle(@RequestBody Brd param) {
 		Consumer<Brd> c = t -> brdMapper.insertArticle(param);
 		c.accept(param);
-		Supplier<List<Brd>> n = () -> brdMapper.selectBrdArticles(pxy);
-		map.accept(Arrays.asList("msg", "SUCCESS"), Arrays.asList("SUCCESS", n.get()));
-		return map.get();
+		Supplier<List<Brd>> n = () -> brdMapper.selectBrdArticles(pager);
+		trunk.put(Arrays.asList("msg", "SUCCESS"), Arrays.asList("SUCCESS", n.get()));
+		return trunk.get();
 	}
 
 	@PutMapping("/{brdseq}") // 글(posts)을 수정합니다.(PUT)
@@ -89,9 +86,15 @@ public class BrdCtrl {
 	public List<Brd> deleteArticle(@PathVariable String brdseq, @RequestBody Brd param) {
 		Consumer<Brd> c = t -> brdMapper.delete(param);
 		c.accept(param);
-		list.clear();
 		// ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles();
 		// list = (List<Brd>) n.get();
-		return list;
+		return list.getList();
 	}
+	@PostMapping("/fileupload")
+	public void fileupload(MultipartFile[] uploadFile) {
+		filemgr.fileUpload(uploadFile);
+	}
+
+	
+	
 }

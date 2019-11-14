@@ -207,8 +207,8 @@ auth = (()=>{
 	
 	let automate = ()=>{
 			// $('#btn_login').trigger("click")
-			$('#cid').val('leja') ,
-			$('#cpw').val('1214')
+			$('#cid').val('2') ,
+			$('#cpw').val('2')
 	}
 
 	

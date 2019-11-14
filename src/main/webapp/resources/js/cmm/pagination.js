@@ -39,7 +39,7 @@ pagination = (()=>{
 		})			
 
 		//}
-		$('    <li class="page-item"><a class="page-link" href="#">Next</a></li>')
+		$('<li class="page-item"><a class="page-link" href="#">Next</a></li>')
 		.appendTo('#paginations')		
 		//.appendTo('ul[class="pagination justify-content-center"')
 		

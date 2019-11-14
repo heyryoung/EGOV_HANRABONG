@@ -46,7 +46,17 @@ brd =(()=>{
 		$('#recent').html(brd_vue.brd_write({cname ,cid ,cnum}));
 		$('#write_form input[name="writer"]').val(getCookie("CNAME"));
 		$('#write_form input[name="cnum"]').val(getCookie("CNUM"));
-		
+		$('<reset>',{
+			text : 'CANCEL' , 
+			href: '#' ,
+			style : 'float:right;width:100px;margin-right:10px'
+		})
+		.addClass('btn btn-danger')
+		.appendTo("#write_form")   
+		.click(e=>{
+			e.preventDefault()
+			contentList()
+		})
 		$('<button>',{
 			text : 'SUBMIT' , 
 			href: '#' ,
@@ -79,17 +89,43 @@ brd =(()=>{
 			})  	
 		})
 		
-		$('<reset>',{
-			text : 'CANCEL' , 
-			href: '#' ,
-			style : 'float:right;width:100px;margin-right:10px'
+		$('<button>',{
+			text : 'UPLOAD' , 
+			style: 'float:right;width:100px;margin-right:10px'
 		})
-		.addClass('btn btn-danger')
-		.appendTo("#write_form")   
+		.addClass('btn btn-warning')
+		.appendTo("#write_form")     
 		.click(e=>{
 			e.preventDefault()
-			contentList()
+			let formData = new FormData()
+			let files = $('#upload')[0].files
+			let i = 0
+			for(;i<files.length;i++){
+				/*if($.fn.checkExtension({fname: files[i].name, fsize : files[i].size}){
+					return
+				})*/
+				formData.append("uploadFile", files[i])
+			}
+			$.ajax({
+				url: '/web/articles/fileupload/',
+				processData: false,
+				contentType: false,
+				data : formData,
+				type : 'POST',
+				success: d=>{
+					alert('파일업로드')},
+				error: e=>{
+					alert('앗 실쑤')
+				}
+			})
+			alert(files)
 		})
+		
+		$('<input>',{
+			id : "upload",
+			type:"file"
+		}).appendTo('#write_form')
+		
 	}
 	let navigation =()=>{
 		navi.onCreate()
@@ -189,6 +225,7 @@ brd =(()=>{
 			contentType : 'application/json',
 			success : d =>{
 					pagination(d)
+					alert(d.pageInfo.existPrev)
 					$.each(d.articles, ( i , brd)=>{
 						$('<div>',{
 							href : '#'
@@ -209,9 +246,11 @@ brd =(()=>{
 	}// contentList	
 	
 	let pagination=d=>{
+		alert(d.pageInfo.existPrev)
 		$('#pagination').append(page_vue.page_vue_body())
 		var cnt = 0;
-		if(d.pageInfo.existPrev) {$(' <li class="page-item"><a class="page-link" href="#">Previous</a></li>')
+		if(d.pageInfo.existPrev) {
+		$('<li class="page-item"><a class="page-link" href="#">Previous</a></li>')
 		.appendTo('ul[class="pagination justify-content-center"')
 		.click(e=>{
 			$('input[name="pageNo"]').val(d.pageInfo.blist[0]-5),

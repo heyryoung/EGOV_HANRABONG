@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -16,21 +15,22 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.hanrabong.web.brd.BrdMapper;
+import com.hanrabong.web.enums.Path;
 
 import lombok.Data;
 
-@Data @Component @Lazy
-public class ProxyForCrawling {
+@Component @Lazy
+public class ProxyForCrawling extends Proxy{
 	private String search;
 	private final int BLOCK_SIZE = 5;
 	private List<Integer>blist ;
-	private List<String> proxyList;	
+	@Autowired Box<String> proxyList;	
 	@Autowired BrdMapper brdMapper;
 
 	
-	public List<String> crawl(Map<?, ?> paramMap) {
+	public Box<String> choose(Map<?, ?> paramMap) {
 		String url ="";
-		switch (paramMap.get("targetSite").toString()) {
+		switch (string(paramMap.get("targetSite"))) {
 		case "google":
 			url = "https://www.google.co.kr/";
 			break;
@@ -41,20 +41,29 @@ public class ProxyForCrawling {
 			url = "https://www.youtube.com/results?search_query="+paramMap.get("searchWrd");
 			break;
 		default:
+			url = Path.CLAWLING_TARGET.toString();
 			break;
 		}
+		crawling(url);
+		
+		return proxyList;
+	}
 
+	private List<?> crawling(String url) {
+		List<String> list= new ArrayList<>();
+		list.clear();
 		try {
-			Connection.Response response = Jsoup.connect(url).method(Connection.Method.GET).execute();
-			Document document = response.parse();
-			String text = document.text();
-			proxyList.clear();
-			proxyList.add(text);
+			Document rawData = Jsoup.connect(url).timeout(10*1000).get();
+			  Elements review = rawData.select("div[class=atc]"); 
+			  System.out.println(review.text()); 
+			  for(Element e : review) {
+				  list.add(e.text()+"\n ***************** \n");
+			  }
+			   
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
-		
-		return proxyList;
+		return list;
 	} 
 	
 	public List<String> productListCrawl(String categoryNum) {
@@ -123,17 +132,17 @@ public class ProxyForCrawling {
 			}
 		}
 		int index1 =0;
-		proxyList = new ArrayList<String>();
+		List<String> List = new ArrayList<String>();
 		for (String element : tempList) {
 			tempList1 = productListCrawl(element);
 			for (String string : tempList1) {
 				if (string != null) {
-					proxyList.add(index1, string);  
+					List.add(index1, string);  
 					index1++;
 				}
 			}
 		}
-		return proxyList;
+		return List;
 	}
 	
 	

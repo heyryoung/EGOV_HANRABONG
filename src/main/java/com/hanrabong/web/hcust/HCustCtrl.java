@@ -1,5 +1,6 @@
 package com.hanrabong.web.hcust;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -17,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hanrabong.web.enums.SQL;
+
 import lombok.extern.log4j.Log4j;
 
 @RestController
 @RequestMapping("/hcusts")
-@Log4j
 public class HCustCtrl {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HCustCtrl.class);
 	@Autowired Map<String, Object>map;
 	@Autowired HCust hcust;
 	@Autowired HCustMapper hCustMapper;
@@ -78,7 +79,39 @@ public class HCustCtrl {
 		
 	}
 	
-	
+	@GetMapping("/create/table")
+	public Map<?,?> createhcust(){
+		HashMap<String,String> paramMap = new HashMap<>();
+		paramMap.put("CREATE_TABLE", SQL.CREATE_HCUST.toString());
+		System.out.println(paramMap);
+		Consumer<HashMap<String,String>> c = t-> hCustMapper.createHCust(t);
+		c.accept(paramMap);
+		paramMap.clear();
+		paramMap.put("msg", "Success");
+		return paramMap;
+	}
+	@GetMapping("/drop/favoriteTable")
+	public Map<?,?> drophcust(){
+		HashMap<String,String> paramMap = new HashMap<>();
+		paramMap.put("DROP_FAVORITE", SQL.DROP_FAVORITE.toString());
+		System.out.println(paramMap);
+		Consumer<HashMap<String,String>> c = t-> hCustMapper.dropFavorite(t);
+		c.accept(paramMap);
+		paramMap.clear();
+		paramMap.put("msg", "Success");
+		return paramMap;
+	}
+	@GetMapping("/create/favoriteTable")
+	public Map<?,?> createFavorite(){
+		HashMap<String,String> paramMap = new HashMap<>();
+		paramMap.put("CREATE_FAVORITE", SQL.CREATE_FAVORITE.toString());
+		System.out.println(paramMap);
+		Consumer<HashMap<String,String>> c = t-> hCustMapper.createFavorite(t);
+		c.accept(paramMap);
+		paramMap.clear();
+		paramMap.put("msg", "Success");
+		return paramMap;
+	}
 	
 	
 }

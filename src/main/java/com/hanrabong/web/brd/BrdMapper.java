@@ -1,15 +1,14 @@
 package com.hanrabong.web.brd;
 
 import java.util.ArrayList;
-import java.util.Map;
 import org.springframework.stereotype.Repository;
 
-import com.hanrabong.web.pxy.Proxy;
+import com.hanrabong.web.pxy.PageProxy;
 
 @Repository
 public interface BrdMapper {
 
-	public ArrayList<Brd> selectBrdArticles(Proxy pxy);
+	public ArrayList<Brd> selectBrdArticles(PageProxy pxy);
 	public Brd selectArticle(String brdseq);
 	public void insertArticle(Brd param);
 	public void modify(Brd paeam);

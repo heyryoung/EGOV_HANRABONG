@@ -17,3 +17,16 @@ $(document).ready(function(){
 	       }
 	   })
 })
+$.prototype.checkExtension(x){
+	let regex= new RegExp("(.*?)\.(exe|sh|zip|alz)$") 
+	let maxSize = 5242880;
+	if (x.fsize >=maxSize){
+		alert('파일 사이즈초과')
+		return false
+	}
+	if(regex.test(x.frame)){
+		alert('파일업로드 불가 종류')
+		return false
+	}
+	return true
+}

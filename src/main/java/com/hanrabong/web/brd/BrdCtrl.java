@@ -1,5 +1,6 @@
 package com.hanrabong.web.brd;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,15 +9,19 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import com.hanrabong.web.enums.Path;
+import com.hanrabong.web.pxy.FileProxy;
 import com.hanrabong.web.pxy.Proxy;
 import com.hanrabong.web.pxy.ProxyMap;
 
@@ -33,6 +38,8 @@ public class BrdCtrl {
 	Proxy pxy;
 	@Autowired
 	ProxyMap map;
+	@Autowired
+	FileProxy filemgr;
 
 	@GetMapping("/page/{pageNo}/size/{pageSize}") // GET / post 글 목록(posts)을 봅니다(GET)
 	public Map<?, ?> articleList(@PathVariable String pageNo, @PathVariable String pageSize) {
@@ -93,5 +100,9 @@ public class BrdCtrl {
 		// ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles();
 		// list = (List<Brd>) n.get();
 		return list;
+	}
+	@PostMapping("/fileupload")
+	public void fileupload(MultipartFile[]  uploadFile) {
+		filemgr.fileupload(uploadFile);
 	}
 }

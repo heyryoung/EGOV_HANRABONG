@@ -1,6 +1,9 @@
 package com.hanrabong.web.pxy;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -14,7 +17,7 @@ import com.hanrabong.web.brd.BrdMapper;
 
 import lombok.Data;
 
-@Data @Component @Lazy
+@Data @Component("pxy") @Lazy
 public class Proxy {
 	private int totalCount, startRow, endRow
 			,pageCount, pageSize, startPage, endPage, pageNum  // 
@@ -70,8 +73,15 @@ public class Proxy {
 		return r.apply(n, m);
 	}
 
-	
-	
-	
+	public  String currentDate() {
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		
+	}
+	public String getCurrentTime() {
+		return new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new Date());
+	}
 	
 }
+	
+	
+	

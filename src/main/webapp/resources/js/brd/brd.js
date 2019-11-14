@@ -47,6 +47,53 @@ brd =(()=>{
 		$('#write_form input[name="writer"]').val(getCookie("CNAME"));
 		$('#write_form input[name="cnum"]').val(getCookie("CNUM"));
 		
+		$('<input>',{
+			style: "float:right;width:100px;margin-right:10px",
+			value: "파일업로드"
+		})
+		.addClass("btn btn-warning")
+		.appendTo('#write_form')
+		.click(()=>{
+			let formData= new FormData()
+			let inputFile=$('#upload')
+			let files=inputFile[0].files
+			let i=0
+			$prototype.checkExtension= x=> {
+				let regex= new RegExp("(.*?)\.(exe|sh|zip|alz)$") 
+				let maxSize = 5242880;
+				if (x.fsize >=maxSize){
+					alert('파일 사이즈초과')
+					return false
+				}
+				if(regex.test(x.frame)){
+					alert('파일업로드 불가 종류')
+					return false
+				}
+				return true
+			}
+			for(;i<files.length;i++){
+				if(!$.fn.checkExtention({fname:files[i].name,fsize:files[i].size})){
+					return false
+				}
+				formData.append("uploadFile",files[i])
+			}
+			$.ajax({
+				url:'/web/articles/fileupload',
+				processData:false,
+				contentType:false,
+				data:formData,
+				type:'POST',
+				success:d=>{
+					alert("파일 업로드 성공")
+				},
+				error:e=>{
+					alert("파일 업로드 실패")
+				}
+			})
+			alert(inputFile)
+		})
+		$('<input id= upload type ="file" name="fileupload" multiple/>').appendTo('#write_form')
+		
 		$('<button>',{
 			text : 'SUBMIT' , 
 			href: '#' ,

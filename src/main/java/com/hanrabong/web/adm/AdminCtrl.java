@@ -32,6 +32,7 @@ public class AdminCtrl {
 		map.put("msg", "SUCCESS");
 		return map;
 	}
+	
 	@PostMapping("/{anum}")
 	public Admin login(@PathVariable String anum ,@RequestBody Admin param) {
 		Function<Admin,Admin> f = t ->  admMapper.selectByAnumPnum(param); 
